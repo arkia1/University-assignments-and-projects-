@@ -1,4 +1,4 @@
-import random
+
 
 def get_user_number():
     while True:
@@ -26,7 +26,7 @@ def binary_search(number):
     for _ in range(5):
         mid = (low + high) // 2
         print(f"Is the number {mid}?")
-        user_input = input("Is the number higher (h) or lower (l)? ")
+        user_input = input("Is the number higher (h) or lower (l)? \nclick any other button if the guess is correct. ")
         if user_input == "h":
             low = mid + 1
         elif user_input == "l":
