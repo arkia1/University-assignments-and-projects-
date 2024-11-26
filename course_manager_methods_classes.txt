@@ -1,0 +1,9 @@
+Classes, Properties, and Methods
+Classes:
+Course: Represents a course and its related information.
+Properties: code, name, teacher, email, credits, time, location, notes, deadlines
+Methods: add_notes(note), add_deadline(description, due_date), display_info(), most_urgent_deadline()
+Functions:
+save_courses_to_file(courses): Save courses to a JSON file.
+load_courses_from_file(): Load courses from a JSON file.
+main(): Driver function for user interaction and menu management.
