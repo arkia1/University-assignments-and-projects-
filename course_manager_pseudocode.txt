@@ -1,0 +1,104 @@
+START Program: "Course Manager"
+
+DEFINE Class "Course":
+    ATTRIBUTES:
+        - code: string
+        - name: string
+        - teacher: string
+        - email: string
+        - credits: integer
+        - time: string
+        - location: string
+        - notes: list
+        - deadlines: list of dictionaries (each with "description" and "due_date")
+    METHODS:
+        - add_notes(note: string):
+            ADD note to notes
+        - add_deadline(description: string, due_date: string):
+            ADD {"description": description, "due_date": due_date} to deadlines
+            SORT deadlines by due_date
+        - display_info():
+            PRINT all course attributes, notes, and deadlines
+        - most_urgent_deadline():
+            RETURN the first item in deadlines if not empty, ELSE return None
+
+DEFINE FUNCTION save_courses_to_file(courses: list, filename: string):
+    WRITE courses to filename in JSON format
+
+DEFINE FUNCTION load_courses_from_file(filename: string):
+    IF file exists:
+        READ data from filename in JSON format
+        CONVERT data to list of Course objects
+        RETURN the list
+    ELSE:
+        RETURN an empty list
+
+DEFINE FUNCTION main():
+    SET courses to result of load_courses_from_file()
+    
+    LOOP until user chooses to exit:
+        DISPLAY menu:
+            1. Add Course
+            2. Modify Course
+            3. View Course Information
+            4. Add Notes to a Course
+            5. Add Deadlines to a Course
+            6. Show Most Urgent Deadline
+            7. Save and Exit
+        
+        GET user input as choice
+        
+        SWITCH(choice):
+            CASE "1":
+                GET course details from user
+                CREATE new Course object with details
+                ADD Course to courses
+            CASE "2":
+                GET course code from user
+                FIND course by code
+                IF course exists:
+                    UPDATE course attributes based on user input
+                ELSE:
+                    DISPLAY "Course not found"
+            CASE "3":
+                GET course code from user
+                FIND course by code
+                IF course exists:
+                    CALL course.display_info()
+                ELSE:
+                    DISPLAY "Course not found"
+            CASE "4":
+                GET course code from user
+                FIND course by code
+                IF course exists:
+                    GET note from user
+                    CALL course.add_notes(note)
+                ELSE:
+                    DISPLAY "Course not found"
+            CASE "5":
+                GET course code from user
+                FIND course by code
+                IF course exists:
+                    GET deadline description and due_date from user
+                    CALL course.add_deadline(description, due_date)
+                ELSE:
+                    DISPLAY "Course not found"
+            CASE "6":
+                SET urgent_deadline to None
+                FOR each course in courses:
+                    GET most urgent deadline from course
+                    IF urgent deadline is earlier than current urgent_deadline:
+                        SET urgent_deadline to this deadline
+                IF urgent_deadline exists:
+                    DISPLAY urgent_deadline
+                ELSE:
+                    DISPLAY "No deadlines found"
+            CASE "7":
+                CALL save_courses_to_file(courses)
+                DISPLAY "Data saved. Goodbye!"
+                EXIT LOOP
+            DEFAULT:
+                DISPLAY "Invalid choice, try again"
+
+CALL main()
+END Program: "Course Manager"
